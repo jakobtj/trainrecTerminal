@@ -1,4 +1,4 @@
-package trainrec;
+package trainrecTerminal;
 
 import org.junit.Before;
 import org.junit.Test;
