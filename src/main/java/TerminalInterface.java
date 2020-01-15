@@ -1,22 +1,30 @@
 package trainrecTerminal;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+import java.util.Scanner;
 
-class TerminalInterface {
-    private LocalDate date;
+public class TerminalInterface {
+    private CommandLineParser parser;
 
     public TerminalInterface() {
-        date = LocalDate.of(2020, 1, 10);
+        parser = new CommandLineParser();
     }
 
-    public void startup() {
-        System.out.println("Current date is " + getDateAsString());
-        System.out.println("Enter 'help' for command overview");
+    public static void main(String[] argv) {
+        TerminalInterface ui = new TerminalInterface();
+        Scanner input = new Scanner(System.in);
+        while (true) {
+            System.out.print(">");
+            String line = input.nextLine();
+            if (line.equals("exit")) {
+                break;
+            } else if (!line.isEmpty()){
+                ui.parse(line);
+            }
+        }
     }
 
-    private String getDateAsString() {
-        DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE;
-        return date.format(formatter);
+    public void parse(String userInput) {
+        String[] argv = userInput.split(" ");
+        parser.parse(argv);
     }
 }

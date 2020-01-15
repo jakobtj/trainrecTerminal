@@ -8,6 +8,8 @@ import org.junit.Assert;
 import java.io.PrintStream;
 import java.io.ByteArrayOutputStream;
 
+import trainrec.TrainingRecord;
+
 public class TerminalInterfaceTest {
     private ByteArrayOutputStream streamRedirect;
     private PrintStream oldStream;
@@ -21,12 +23,14 @@ public class TerminalInterfaceTest {
     }
 
     @Test
-    public void testStartupMessage() {
+    public void testSetDateAddEntryList() {
         TerminalInterface ui = new TerminalInterface();
-        ui.startup();
+        ui.parse("date 2020-01-10");
+        ui.parse("add Squat");
+        ui.parse("list");
 
-        String expected = "Current date is 2020-01-10\n"
-            + "Enter 'help' for command overview\n";
+        String expected = "Date is set to 2020-01-10\n"
+            + "Squat added\n" + "2020-01-10 Squat\n";
         Assert.assertEquals(expected, streamRedirect.toString());
    }
 
