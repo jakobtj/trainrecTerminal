@@ -31,5 +31,9 @@ dependencies {
 
 application {
     // Define the main class for the application.
-    mainClassName = ''
+    mainClassName = 'trainrecTerminal.TerminalInterface'
+}
+
+run{
+    standardInput = System.in
 }
