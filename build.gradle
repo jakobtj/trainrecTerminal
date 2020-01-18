@@ -23,7 +23,7 @@ repositories {
 dependencies {
     implementation ":trainrec"
 
-    compile "com.beust:jcommander:1.71"
+    implementation "com.beust:jcommander:1.71"
 
     // Test framework
     testImplementation 'junit:junit:4.12'
