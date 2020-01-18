@@ -23,7 +23,24 @@ public class TerminalInterfaceTest {
     }
 
     @Test
-    public void testSetDateAddEntryList() {
+    public void testNewInterfaceListsEmpty() {
+        TerminalInterface ui = new TerminalInterface();
+        ui.parse("list");
+
+        Assert.assertEquals("", streamRedirect.toString());
+    }
+
+    @Test
+    public void testSetDateReturnMessage() {
+        TerminalInterface ui = new TerminalInterface();
+        ui.parse("date 2020-01-10");
+
+        Assert.assertEquals("Date is set to 2020-01-10\n",
+                streamRedirect.toString());
+    }
+
+    @Test
+    public void testAddEntry() {
         TerminalInterface ui = new TerminalInterface();
         ui.parse("date 2020-01-10");
         ui.parse("add Squat");
