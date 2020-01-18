@@ -9,7 +9,7 @@ import com.beust.jcommander.Parameters;
 
 import trainrec.TrainingRecord;
 import trainrec.ExerciseEntry;
-import trainrec.Date;
+import trainrec.EntryDate;
 
 public class CommandLineParser {
     private TrainingRecord rec;
@@ -32,7 +32,7 @@ public class CommandLineParser {
             jct.parse(argv);
             if ("date".equals(jct.getParsedCommand())) {
                 String date = setDate.get();
-                rec.setActiveDate(Date.fromString(date));
+                rec.setActiveDate(EntryDate.fromString(date));
                 System.out.println(String.format("Date is set to %s", date));
             } else if ("add".equals(jct.getParsedCommand())) {
                 String exercise = addEntry.get();
