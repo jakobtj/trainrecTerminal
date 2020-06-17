@@ -21,7 +21,7 @@ repositories {
 }
 
 dependencies {
-    implementation ":trainrec"
+    implementation ":core"
 
     implementation "com.beust:jcommander:1.71"
 
@@ -31,7 +31,7 @@ dependencies {
 
 application {
     // Define the main class for the application.
-    mainClassName = 'trainrecTerminal.TerminalInterface'
+    mainClassName = 'no.trainrec.terminal_interface.TerminalInterface'
 }
 
 run{

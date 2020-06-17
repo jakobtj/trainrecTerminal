@@ -1,4 +1,4 @@
-package trainrecTerminal;
+package no.trainrec.terminal_interface;
 
 import java.util.Scanner;
 

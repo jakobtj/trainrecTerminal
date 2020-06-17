@@ -1,4 +1,4 @@
-package trainrecTerminal;
+package no.trainrec.terminal_interface;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -8,7 +8,7 @@ import org.junit.Assert;
 import java.io.PrintStream;
 import java.io.ByteArrayOutputStream;
 
-import trainrec.TrainingRecord;
+import no.trainrec.core.TrainingRecord;
 
 public class TerminalInterfaceTest {
     private ByteArrayOutputStream streamRedirect;

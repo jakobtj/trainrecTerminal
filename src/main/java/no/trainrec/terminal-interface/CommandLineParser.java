@@ -1,4 +1,4 @@
-package trainrecTerminal;
+package no.trainrec.terminal_interface;
 
 import java.util.List;
 
@@ -7,9 +7,9 @@ import com.beust.jcommander.ParameterException;
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.Parameters;
 
-import trainrec.TrainingRecord;
-import trainrec.ExerciseEntry;
-import trainrec.EntryDate;
+import no.trainrec.core.TrainingRecord;
+import no.trainrec.core.ExerciseEntry;
+import no.trainrec.core.EntryDate;
 
 public class CommandLineParser {
     private TrainingRecord rec;
