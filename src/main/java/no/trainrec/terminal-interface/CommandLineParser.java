@@ -13,49 +13,68 @@ import no.trainrec.core.EntryDate;
 
 public class CommandLineParser {
     private TrainingRecord rec;
+    private SetDate setDate;
+    private AddEntry addEntry;
+    private ListEntries listEntries;
+    private JCommander jc;
 
     public CommandLineParser() {
         rec = new TrainingRecord();
+        setDate = new SetDate();
+        addEntry = new AddEntry();
+        listEntries = new ListEntries();
+        jc = new JCommander();
+        linkCommandsAndCommander();
     }
 
     public void parse(String[] argv) {
-        SetDate setDate = new SetDate();
-        AddEntry addEntry = new AddEntry();
-        ListEntries listEntries = new ListEntries();
-
-        JCommander jct = new JCommander();
-        jct.addCommand("date", setDate);
-        jct.addCommand("add", addEntry);
-        jct.addCommand("list", listEntries);
-
         try {
-            jct.parse(argv);
-            if ("date".equals(jct.getParsedCommand())) {
-                String date = setDate.get();
-                try {
-                    rec.setActiveDate(EntryDate.fromString(date));
-                    System.out.println(String.format("Date is set to %s", date));
-                } catch (IllegalArgumentException ex) {
-                    System.out.println(String.format(
-                                "%s is not recognized as date", date
-                                ));
-                }
-            } else if ("add".equals(jct.getParsedCommand())) {
-                String exercise = addEntry.get();
-                rec.addEntry(exercise);
-                System.out.println(String.format("%s added", exercise));
-            } else if ("list".equals(jct.getParsedCommand())) {
-                List<ExerciseEntry> entries = rec.listEntries();
-                for (ExerciseEntry entry : entries) {
-                    System.out.println(String.format(
-                                "%s %s", entry.getDate(), entry.getExercise()
-                                ));
-                }
-            } else {
-                System.out.println("Unknown option");
-            }
+            jc.parse(argv);
+            resolveCommand();
         } catch (ParameterException ex) {
             System.out.println(ex.getMessage());
+        }
+    }
+
+    private void linkCommandsAndCommander() {
+        jc.addCommand("date", setDate);
+        jc.addCommand("add", addEntry);
+        jc.addCommand("list", listEntries);
+    }
+
+    private void resolveCommand() {
+        if ("date".equals(jc.getParsedCommand())) {
+            resolveDateCommand(setDate.get());
+        } else if ("add".equals(jc.getParsedCommand())) {
+            resolveAddCommand(addEntry.get());
+        } else if ("list".equals(jc.getParsedCommand())) {
+            resolveListCommand(rec.listEntries());
+        } else {
+            System.out.println("Unknown option");
+        }
+    }
+
+    private void resolveDateCommand(String date) {
+        try {
+            rec.setActiveDate(EntryDate.fromString(date));
+            System.out.println(String.format("Date is set to %s", date));
+        } catch (IllegalArgumentException ex) {
+            System.out.println(String.format(
+                        "%s is not recognized as date", date
+                        ));
+        }
+    }
+
+    private void resolveAddCommand(String exercise) {
+        rec.addEntry(exercise);
+        System.out.println(String.format("%s added", exercise));
+    }
+
+    private void resolveListCommand(List<ExerciseEntry> entries) {
+        for (ExerciseEntry entry : entries) {
+            System.out.println(String.format(
+                        "%s %s", entry.getDate(), entry.getExercise()
+                        ));
         }
     }
 }
