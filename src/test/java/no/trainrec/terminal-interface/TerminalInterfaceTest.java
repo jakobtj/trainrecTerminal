@@ -40,6 +40,15 @@ public class TerminalInterfaceTest {
     }
 
     @Test
+    public void testSetDateWrongFormatReturnErrorMessage() {
+        TerminalInterface ui = new TerminalInterface();
+        ui.parse("date %%");
+
+        Assert.assertEquals("%% is not recognized as date\n",
+                streamRedirect.toString());
+    }
+
+    @Test
     public void testAddEntry() {
         TerminalInterface ui = new TerminalInterface();
         ui.parse("date 2020-01-10");

@@ -32,8 +32,14 @@ public class CommandLineParser {
             jct.parse(argv);
             if ("date".equals(jct.getParsedCommand())) {
                 String date = setDate.get();
-                rec.setActiveDate(EntryDate.fromString(date));
-                System.out.println(String.format("Date is set to %s", date));
+                try {
+                    rec.setActiveDate(EntryDate.fromString(date));
+                    System.out.println(String.format("Date is set to %s", date));
+                } catch (IllegalArgumentException ex) {
+                    System.out.println(String.format(
+                                "%s is not recognized as date", date
+                                ));
+                }
             } else if ("add".equals(jct.getParsedCommand())) {
                 String exercise = addEntry.get();
                 rec.addEntry(exercise);
