@@ -8,6 +8,9 @@ import org.junit.Assert;
 import java.io.PrintStream;
 import java.io.ByteArrayOutputStream;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 import no.trainrec.core.TrainingRecord;
 
 public class TerminalInterfaceTest {
@@ -31,7 +34,7 @@ public class TerminalInterfaceTest {
     }
 
     @Test
-    public void testSetDateReturnMessage() {
+    public void testSetDate() {
         TerminalInterface ui = new TerminalInterface();
         ui.parse("date 2020-01-10");
 
@@ -49,6 +52,35 @@ public class TerminalInterfaceTest {
     }
 
     @Test
+    public void testSetDateMultipleTimes() {
+        TerminalInterface ui = new TerminalInterface();
+        ui.parse("date %%");
+        ui.parse("date ??");
+
+        Assert.assertEquals("%% is not recognized as date\n"
+                + "?? is not recognized as date\n",
+                streamRedirect.toString()
+                );
+    }
+
+    @Test
+    public void testDateKeywordNoArguments() {
+        TerminalInterface ui = new TerminalInterface();
+
+        ui.parse("date");
+        ui.parse("date 2020-01-10");
+        ui.parse("date");
+        String today = LocalDate.now().format(
+                DateTimeFormatter.ISO_LOCAL_DATE
+                );
+        String expected = String.format("Active date is %s\n", today)
+            + "Date is set to 2020-01-10\n"
+            + "Active date is 2020-01-10\n";
+
+        Assert.assertEquals(expected, streamRedirect.toString());
+    }
+
+    @Test
     public void testAddEntry() {
         TerminalInterface ui = new TerminalInterface();
         ui.parse("date 2020-01-10");
@@ -56,7 +88,29 @@ public class TerminalInterfaceTest {
         ui.parse("list");
 
         String expected = "Date is set to 2020-01-10\n"
-            + "Squat added\n" + "2020-01-10 Squat\n";
+            + "Squat added\n" 
+            + "2020-01-10 Squat\n";
+        Assert.assertEquals(expected, streamRedirect.toString());
+   }
+
+    @Test
+    public void testAddMultipleEntries() {
+        TerminalInterface ui = new TerminalInterface();
+        ui.parse("add Squat");
+        ui.parse("add Bench press");
+
+        String expected = "Squat added\n" + "Bench press added\n";
+        Assert.assertEquals(expected, streamRedirect.toString());
+   }
+
+    @Test
+    public void testAddKeywordNoArguments() {
+        TerminalInterface ui = new TerminalInterface();
+        ui.parse("add");
+        ui.parse("add Squat");
+        ui.parse("add");
+
+        String expected = "Squat added\n";
         Assert.assertEquals(expected, streamRedirect.toString());
    }
 
