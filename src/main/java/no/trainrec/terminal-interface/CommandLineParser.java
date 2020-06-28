@@ -10,7 +10,6 @@ import com.beust.jcommander.Parameters;
 import no.trainrec.core.TrainingRecord;
 import no.trainrec.core.EntryAdder;
 import no.trainrec.core.ExerciseEntry;
-import no.trainrec.core.EntryDate;
 
 public class CommandLineParser {
     private TrainingRecord rec;

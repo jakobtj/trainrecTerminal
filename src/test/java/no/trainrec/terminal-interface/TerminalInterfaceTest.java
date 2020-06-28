@@ -11,8 +11,6 @@ import java.io.ByteArrayOutputStream;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-import no.trainrec.core.TrainingRecord;
-
 public class TerminalInterfaceTest {
     private ByteArrayOutputStream streamRedirect;
     private PrintStream oldStream;
