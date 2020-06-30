@@ -14,6 +14,7 @@ import java.time.format.DateTimeFormatter;
 public class TerminalInterfaceTest {
     private ByteArrayOutputStream streamRedirect;
     private PrintStream oldStream;
+    private TerminalInterface ui;
 
     @Before
     public void setUp() {
@@ -21,11 +22,12 @@ public class TerminalInterfaceTest {
         streamRedirect = new ByteArrayOutputStream();
         oldStream = System.out; // Keep old system out
         System.setOut(new PrintStream(streamRedirect));
+        
+        ui = new TerminalInterface();
     }
 
     @Test
     public void testNewInterfaceListsEmpty() {
-        TerminalInterface ui = new TerminalInterface();
         ui.parse("list");
 
         Assert.assertEquals("", streamRedirect.toString());
@@ -33,7 +35,6 @@ public class TerminalInterfaceTest {
 
     @Test
     public void testSetDate() {
-        TerminalInterface ui = new TerminalInterface();
         ui.parse("date 2020-01-10");
 
         Assert.assertEquals("Date is set to 2020-01-10\n",
@@ -42,7 +43,6 @@ public class TerminalInterfaceTest {
 
     @Test
     public void testSetDateWrongFormatReturnErrorMessage() {
-        TerminalInterface ui = new TerminalInterface();
         ui.parse("date %%");
 
         Assert.assertEquals("%% is not recognized as date\n",
@@ -51,7 +51,6 @@ public class TerminalInterfaceTest {
 
     @Test
     public void testSetDateMultipleTimes() {
-        TerminalInterface ui = new TerminalInterface();
         ui.parse("date %%");
         ui.parse("date ??");
 
@@ -63,8 +62,6 @@ public class TerminalInterfaceTest {
 
     @Test
     public void testDateKeywordNoArguments() {
-        TerminalInterface ui = new TerminalInterface();
-
         ui.parse("date");
         ui.parse("date 2020-01-10");
         ui.parse("date");
@@ -80,7 +77,6 @@ public class TerminalInterfaceTest {
 
     @Test
     public void testAddEntry() {
-        TerminalInterface ui = new TerminalInterface();
         ui.parse("date 2020-01-10");
         ui.parse("add Squat");
         ui.parse("list");
@@ -93,7 +89,6 @@ public class TerminalInterfaceTest {
 
     @Test
     public void testAddMultipleEntries() {
-        TerminalInterface ui = new TerminalInterface();
         ui.parse("add Squat");
         ui.parse("add Bench press");
 
@@ -103,7 +98,6 @@ public class TerminalInterfaceTest {
 
     @Test
     public void testAddKeywordNoArguments() {
-        TerminalInterface ui = new TerminalInterface();
         ui.parse("add");
         ui.parse("add Squat");
         ui.parse("add");
