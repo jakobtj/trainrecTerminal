@@ -20,7 +20,7 @@ public class CommandLineParser {
     private JCommander jc;
 
     public CommandLineParser() {
-        rec = new TrainingRecord();
+        rec = new TrainingRecord(new CSVStorage());
         adder = new EntryAdder(rec);
         setDate = new SetDate();
         addEntry = new AddEntry();
