@@ -46,9 +46,9 @@ public class CoreAccessorTest {
     }
 
     @Test
-    public void testSetDate() {
-        accessor.setDate("2020-10-01");
+    public void testSetActiveDate() {
+        accessor.setActiveDate("2020-10-01");
 
-        Mockito.verify(adder).setDate("2020-10-01");
+        Mockito.verify(adder).setActiveDate("2020-10-01");
     }
 }

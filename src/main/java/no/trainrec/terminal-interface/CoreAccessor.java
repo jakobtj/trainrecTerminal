@@ -19,6 +19,10 @@ public class CoreAccessor {
         adder.addEntry(entryName);
     }
 
+    public void setActiveDate(String isoformattedDate) {
+        adder.setActiveDate(isoformattedDate);
+    }
+
     public String listEntries() {
         String entries = "";
         for (ExerciseEntry entry : rec.listEntries()) {
