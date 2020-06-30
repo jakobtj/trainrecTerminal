@@ -1,6 +1,8 @@
 package no.trainrec.terminal_interface;
 
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.ParameterException;
@@ -14,17 +16,13 @@ import no.trainrec.core.ExerciseEntry;
 public class CommandLineParser {
     private TrainingRecord rec;
     private EntryAdder adder;
-    private SetDate setDate;
-    private AddEntry addEntry;
-    private ListEntries listEntries;
     private JCommander jc;
+    private Map<String, JCommanderMethod> methods;
 
     public CommandLineParser() {
         rec = new TrainingRecord(new CSVStorage());
         adder = new EntryAdder(rec);
-        setDate = new SetDate();
-        addEntry = new AddEntry();
-        listEntries = new ListEntries();
+        methods = createMethodMap();
         jc = new JCommander();
         linkCommandsAndCommander();
     }
@@ -38,10 +36,18 @@ public class CommandLineParser {
         }
     }
 
+    private Map<String, JCommanderMethod> createMethodMap() {
+        Map<String, JCommanderMethod> map = new HashMap<String, JCommanderMethod>();
+        map.put("date", new SetDate());
+        map.put("add", new AddEntry());
+        map.put("list", new ListEntries());
+        return map;
+    }
+
     private void linkCommandsAndCommander() {
-        jc.addCommand("date", setDate);
-        jc.addCommand("add", addEntry);
-        jc.addCommand("list", listEntries);
+        for (String key : methods.keySet()) {
+            jc.addCommand(key, methods.get(key));
+        }
     }
 
     private void resolveCommand() {
@@ -55,7 +61,7 @@ public class CommandLineParser {
 
     private void resolveDateCommand() {
         try {
-            String date = setDate.pop();
+            String date = methods.get("date").pop();
             try { 
                 adder.setActiveDate(date);
                 System.out.println(String.format("Date is set to %s", date));
@@ -73,7 +79,7 @@ public class CommandLineParser {
 
     private void resolveAddCommand() {
         try {
-            String exercise = addEntry.pop();
+            String exercise = methods.get("add").pop();
             adder.addEntry(exercise);
             System.out.println(String.format("%s added", exercise));
         } catch (NullPointerException | IndexOutOfBoundsException ex) {
@@ -82,8 +88,7 @@ public class CommandLineParser {
     }
 
     private void resolveListCommand() {
-        List<ExerciseEntry> entries = rec.listEntries();
-        for (ExerciseEntry entry : entries) {
+        for (ExerciseEntry entry : rec.listEntries()) {
             System.out.println(String.format(
                         "%s %s", entry.getDate(), entry.getExercise()
                         ));
@@ -91,35 +96,32 @@ public class CommandLineParser {
     }
 }
 
-@Parameters(commandDescription = "Sets date")
-class SetDate {
-    @Parameter(description = "ISO-formatted date string to set")
-    private List<String> date;
+class JCommanderMethod {
+    @Parameter
+    List<String> argv;
 
     public String pop() {
-        String res = date.get(0);
-        date.clear();
+        String res = argv.get(0);
+        argv.clear();
         return res;
     }
 }
 
-@Parameters(commandDescription = "Adds exercise entry")
-class AddEntry {
-    @Parameter(description = "Name of exercise")
-    private List<String> exercise;
+@Parameters(commandDescription = "Sets date")
+class SetDate extends JCommanderMethod {}
 
+@Parameters(commandDescription = "Adds exercise entry")
+class AddEntry extends JCommanderMethod {
+    @Override
     public String pop() {
-        String res = exercise.get(0);
-        if (exercise.size() > 1) {
-            res = String.join(" ", exercise);
+        String res = argv.get(0);
+        if (argv.size() > 1) {
+            res = String.join(" ", argv);
         }
-        exercise.clear();
+        argv.clear();
         return res;
     }
 }
 
 @Parameters(commandDescription = "List all exercise entries")
-class ListEntries {
-    @Parameter
-    private List argv;
-}
+class ListEntries extends JCommanderMethod {}
