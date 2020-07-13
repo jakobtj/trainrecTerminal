@@ -1,6 +1,7 @@
 package no.trainrec.terminal_interface;
 
 import java.util.List;
+import java.util.ArrayList;
 
 import no.trainrec.core.TrainingRecord;
 import no.trainrec.core.EntryAdder;
@@ -10,9 +11,17 @@ public class CoreAccessor {
     private TrainingRecord rec;
     private EntryAdder adder; 
 
-    public CoreAccessor(TrainingRecord inputRec, EntryAdder inputAdder) {
-        rec = inputRec;
-        adder = inputAdder;
+    public CoreAccessor() {
+        rec = new TrainingRecord(new CSVStorage());
+        adder = new EntryAdder(rec);
+    }
+
+    public void setTrainingRecord(TrainingRecord newRec) {
+        rec = newRec;
+    }
+
+    public void setEntryAdder(EntryAdder newAdder) {
+        adder = newAdder;
     }
 
     public void addEntry(String entryName) {
@@ -23,12 +32,16 @@ public class CoreAccessor {
         adder.setActiveDate(isoformattedDate);
     }
 
-    public String listEntries() {
-        String entries = "";
+    public String getActiveDate() {
+        return adder.getActiveDate();
+    }
+
+    public List<String> listEntries() {
+        List<String> entries = new ArrayList<String>();
         for (ExerciseEntry entry : rec.listEntries()) {
-            entries = String.format(
-                    "%s\n%s %s", entries, entry.getDate(), entry.getExercise()
-                    );
+            entries.add(String.format(
+                    "%s %s", entry.getDate(), entry.getExercise()
+                    ));
         }
         return entries;
     }

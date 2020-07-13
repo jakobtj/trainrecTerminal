@@ -5,16 +5,19 @@ import org.junit.Test;
 import org.junit.After;
 import org.junit.Assert;
 
+import org.mockito.Mockito;
+
 import java.io.PrintStream;
 import java.io.ByteArrayOutputStream;
+import java.util.List;
+import java.util.ArrayList;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 
 public class TerminalInterfaceTest {
     private ByteArrayOutputStream streamRedirect;
     private PrintStream oldStream;
     private TerminalInterface ui;
+    private CoreAccessor core;
 
     @Before
     public void setUp() {
@@ -23,88 +26,79 @@ public class TerminalInterfaceTest {
         oldStream = System.out; // Keep old system out
         System.setOut(new PrintStream(streamRedirect));
         
-        ui = new TerminalInterface();
+        core = Mockito.mock(CoreAccessor.class);
+        ui = new TerminalInterface(core);
     }
 
     @Test
-    public void testNewInterfaceListsEmpty() {
-        ui.parse("list");
+    public void testInvalidCommand() {
+        ui.execute("??", "");
 
-        Assert.assertEquals("", streamRedirect.toString());
-    }
-
-    @Test
-    public void testSetDate() {
-        ui.parse("date 2020-01-10");
-
-        Assert.assertEquals("Date is set to 2020-01-10\n",
-                streamRedirect.toString());
-    }
-
-    @Test
-    public void testSetDateWrongFormatReturnErrorMessage() {
-        ui.parse("date %%");
-
-        Assert.assertEquals("%% is not recognized as date\n",
-                streamRedirect.toString());
-    }
-
-    @Test
-    public void testSetDateMultipleTimes() {
-        ui.parse("date %%");
-        ui.parse("date ??");
-
-        Assert.assertEquals("%% is not recognized as date\n"
-                + "?? is not recognized as date\n",
+        Assert.assertEquals("?? is not a valid command",
                 streamRedirect.toString()
                 );
     }
 
     @Test
-    public void testDateKeywordNoArguments() {
-        ui.parse("date");
-        ui.parse("date 2020-01-10");
-        ui.parse("date");
-        String today = LocalDate.now().format(
-                DateTimeFormatter.ISO_LOCAL_DATE
-                );
-        String expected = String.format("Active date is %s\n", today)
-            + "Date is set to 2020-01-10\n"
-            + "Active date is 2020-01-10\n";
+    public void testNewInterfaceListsEmpty() {
+        ui.execute("list", "");
 
-        Assert.assertEquals(expected, streamRedirect.toString());
+        Mockito.verify(core).listEntries();
+        Assert.assertEquals("", streamRedirect.toString());
     }
 
     @Test
-    public void testAddEntry() {
-        ui.parse("date 2020-01-10");
-        ui.parse("add Squat");
-        ui.parse("list");
+    public void testList() {
+        List<String> entries = new ArrayList<String>();
+        entries.add("2020-10-10 Squat");
+        entries.add("2020-11-10 Bench press");
+        Mockito.when(core.listEntries()).thenReturn(entries);
 
-        String expected = "Date is set to 2020-01-10\n"
-            + "Squat added\n" 
-            + "2020-01-10 Squat\n";
-        Assert.assertEquals(expected, streamRedirect.toString());
-   }
+        ui.execute("list", "");
 
-    @Test
-    public void testAddMultipleEntries() {
-        ui.parse("add Squat");
-        ui.parse("add Bench press");
-
-        String expected = "Squat added\n" + "Bench press added\n";
-        Assert.assertEquals(expected, streamRedirect.toString());
-   }
+        Assert.assertEquals("2020-10-10 Squat\n2020-11-10 Bench press\n",
+                streamRedirect.toString()
+                );
+    }
 
     @Test
-    public void testAddKeywordNoArguments() {
-        ui.parse("add");
-        ui.parse("add Squat");
-        ui.parse("add");
+    public void testAdd() {
+        ui.execute("add", "Squat");
 
-        String expected = "Squat added\n";
-        Assert.assertEquals(expected, streamRedirect.toString());
-   }
+        Mockito.verify(core).addEntry("Squat");
+    }
+
+    @Test
+    public void testDateInvalidArgument() {
+        Mockito.doThrow(IllegalArgumentException.class).when(core
+                ).setActiveDate("??");
+        ui.execute("date", "??");
+
+        Assert.assertEquals("Date must be given as YYYY-MM-DD",
+                streamRedirect.toString());
+    }
+
+    @Test
+    public void testSetActiveDate() {
+        ui.execute("date", "2020-10-10");
+
+        Mockito.verify(core).setActiveDate("2020-10-10");
+        Assert.assertEquals("Active date is set to 2020-10-10",
+                streamRedirect.toString()
+                );
+    }
+
+    @Test
+    public void testDateCommandWithoutArgumentGetsDate() {
+        Mockito.when(core.getActiveDate()).thenReturn("2020-10-10");
+
+        ui.execute("date", "");
+
+        Mockito.verify(core).getActiveDate();
+        Assert.assertEquals("Active date is 2020-10-10",
+                streamRedirect.toString()
+                );
+    }
 
     @After
     public void tearDown() {
