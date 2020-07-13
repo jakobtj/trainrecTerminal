@@ -34,7 +34,7 @@ public class TerminalInterfaceTest {
     public void testInvalidCommand() {
         ui.execute("??", "");
 
-        Assert.assertEquals("?? is not a valid command",
+        Assert.assertEquals("?? is not a valid command\n",
                 streamRedirect.toString()
                 );
     }
@@ -74,7 +74,7 @@ public class TerminalInterfaceTest {
                 ).setActiveDate("??");
         ui.execute("date", "??");
 
-        Assert.assertEquals("Date must be given as YYYY-MM-DD",
+        Assert.assertEquals("Date must be given as YYYY-MM-DD\n",
                 streamRedirect.toString());
     }
 
@@ -83,7 +83,7 @@ public class TerminalInterfaceTest {
         ui.execute("date", "2020-10-10");
 
         Mockito.verify(core).setActiveDate("2020-10-10");
-        Assert.assertEquals("Active date is set to 2020-10-10",
+        Assert.assertEquals("Active date is set to 2020-10-10\n",
                 streamRedirect.toString()
                 );
     }
@@ -95,7 +95,7 @@ public class TerminalInterfaceTest {
         ui.execute("date", "");
 
         Mockito.verify(core).getActiveDate();
-        Assert.assertEquals("Active date is 2020-10-10",
+        Assert.assertEquals("Active date is 2020-10-10\n",
                 streamRedirect.toString()
                 );
     }
