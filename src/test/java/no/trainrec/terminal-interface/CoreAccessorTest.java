@@ -9,9 +9,9 @@ import org.mockito.Mockito;
 import java.util.List;
 import java.util.ArrayList;
 
-import no.trainrec.core.TrainingRecord;
-import no.trainrec.core.EntryAdder;
-import no.trainrec.core.ExerciseEntry;
+import no.trainrec.core.data.TrainingRecord;
+import no.trainrec.core.use_case.EntryAdder;
+import no.trainrec.core.domain.ExerciseEntry;
 
 public class CoreAccessorTest {
     private TrainingRecord rec;

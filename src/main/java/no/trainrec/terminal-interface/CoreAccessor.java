@@ -3,9 +3,9 @@ package no.trainrec.terminal_interface;
 import java.util.List;
 import java.util.ArrayList;
 
-import no.trainrec.core.TrainingRecord;
-import no.trainrec.core.EntryAdder;
-import no.trainrec.core.ExerciseEntry;
+import no.trainrec.core.data.TrainingRecord;
+import no.trainrec.core.use_case.EntryAdder;
+import no.trainrec.core.domain.ExerciseEntry;
 
 public class CoreAccessor {
     private TrainingRecord rec;
