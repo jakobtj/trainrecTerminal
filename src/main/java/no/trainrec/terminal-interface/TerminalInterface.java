@@ -14,10 +14,15 @@ public class TerminalInterface {
         TerminalInterface ui = new TerminalInterface(new CoreAccessor());
         CommandParser parser = new CommandParser("");
         Scanner input = new Scanner(System.in);
-        while (true) {
+        boolean run = true;
+        while (run) {
             System.out.print(">");
             parser.parse(input.nextLine());
-            ui.execute(parser.getCommand(), parser.getArgument());
+            if (parser.getCommand().equals("exit")) {
+                run = false;
+            } else {
+                ui.execute(parser.getCommand(), parser.getArgument());
+            }
         }
     }
 
