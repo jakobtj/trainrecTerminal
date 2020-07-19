@@ -11,7 +11,8 @@ public class TerminalInterface {
     }
 
     public static void main(String[] argv) {
-        TerminalInterface ui = new TerminalInterface(new CoreAccessor());
+        CSVStorage storage = new CSVStorage();
+        TerminalInterface ui = new TerminalInterface(new CoreAccessor(storage));
         CommandParser parser = new CommandParser("");
         Scanner input = new Scanner(System.in);
         boolean run = true;

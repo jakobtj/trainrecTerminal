@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 import no.trainrec.core.data.TrainingRecord;
+import no.trainrec.core.data.StorageInterface;
 import no.trainrec.core.use_case.EntryAdder;
 import no.trainrec.core.domain.ExerciseEntry;
 
@@ -11,8 +12,8 @@ public class CoreAccessor {
     private TrainingRecord rec;
     private EntryAdder adder; 
 
-    public CoreAccessor() {
-        rec = new TrainingRecord(new CSVStorage());
+    public CoreAccessor(StorageInterface storage) {
+        rec = new TrainingRecord(storage);
         adder = new EntryAdder(rec);
     }
 

@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import no.trainrec.core.data.TrainingRecord;
 import no.trainrec.core.use_case.EntryAdder;
 import no.trainrec.core.domain.ExerciseEntry;
+import no.trainrec.core.data.StorageInterface;
 
 public class CoreAccessorTest {
     private TrainingRecord rec;
@@ -20,7 +21,7 @@ public class CoreAccessorTest {
 
     @Before
     public void setUp() {
-        accessor = new CoreAccessor();
+        accessor = new CoreAccessor(Mockito.mock(StorageInterface.class));
         rec = Mockito.mock(TrainingRecord.class);
         adder = Mockito.mock(EntryAdder.class);
         accessor.setTrainingRecord(rec);
