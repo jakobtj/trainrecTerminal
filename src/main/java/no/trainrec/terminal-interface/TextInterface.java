@@ -3,17 +3,17 @@ package no.trainrec.terminal_interface;
 import java.util.Scanner;
 import java.util.List;
 
-public class TerminalInterface {
+public class TextInterface {
     private CoreAccessor core;
     private String response;
 
-    public TerminalInterface(CoreAccessor inputCore) {
+    public TextInterface(CoreAccessor inputCore) {
         core = inputCore;
     }
 
     public static void main(String[] argv) {
         CSVStorage storage = new CSVStorage();
-        TerminalInterface ui = new TerminalInterface(new CoreAccessor(storage));
+        TextInterface ui = new TextInterface(new CoreAccessor(storage));
         CommandParser parser = new CommandParser("");
         Scanner input = new Scanner(System.in);
         boolean run = true;

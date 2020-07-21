@@ -9,14 +9,14 @@ import org.mockito.Mockito;
 import java.util.List;
 import java.util.ArrayList;
 
-public class TerminalInterfaceTest {
-    private TerminalInterface ui;
+public class TextInterfaceTest {
+    private TextInterface ui;
     private CoreAccessor core;
 
     @Before
     public void setUp() {
         core = Mockito.mock(CoreAccessor.class);
-        ui = new TerminalInterface(core);
+        ui = new TextInterface(core);
     }
 
     @Test
