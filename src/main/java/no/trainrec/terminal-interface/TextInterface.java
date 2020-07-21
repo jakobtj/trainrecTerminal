@@ -13,7 +13,7 @@ public class TextInterface {
     public void execute(String command, String argument) {
         switch (command) {
             case "list": printEntryList(); break;
-            case "add": core.addEntry(argument); break;
+            case "add": addEntry(argument); break;
             case "date": resolveDateCommand(argument); break;
             default: response = String.format(
                                  "%s is not a valid command", command
@@ -27,6 +27,11 @@ public class TextInterface {
 
     private void printEntryList() {
         response = String.join("\n", core.listEntries());
+    }
+
+    private void addEntry(String argument) {
+        core.addEntry(argument);
+        response = String.format("%s added", argument);
     }
 
     private void resolveDateCommand(String argument) {

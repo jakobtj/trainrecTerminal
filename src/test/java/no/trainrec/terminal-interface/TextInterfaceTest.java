@@ -59,6 +59,7 @@ public class TextInterfaceTest {
         ui.execute("add", "Squat");
 
         Mockito.verify(core).addEntry("Squat");
+        Assertions.assertEquals("Squat added", ui.getResponse());
     }
 
     @Test
