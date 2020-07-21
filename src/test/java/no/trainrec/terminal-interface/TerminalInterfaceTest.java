@@ -2,29 +2,19 @@ package no.trainrec.terminal_interface;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.After;
 import org.junit.Assert;
 
 import org.mockito.Mockito;
 
-import java.io.PrintStream;
-import java.io.ByteArrayOutputStream;
 import java.util.List;
 import java.util.ArrayList;
 
 public class TerminalInterfaceTest {
-    private ByteArrayOutputStream streamRedirect;
-    private PrintStream oldStream;
     private TerminalInterface ui;
     private CoreAccessor core;
 
     @Before
     public void setUp() {
-        // Create a stream to redirect output to String
-        streamRedirect = new ByteArrayOutputStream();
-        oldStream = System.out; // Keep old system out
-        System.setOut(new PrintStream(streamRedirect));
-        
         core = Mockito.mock(CoreAccessor.class);
         ui = new TerminalInterface(core);
     }
@@ -33,17 +23,16 @@ public class TerminalInterfaceTest {
     public void testInvalidCommand() {
         ui.execute("??", "");
 
-        Assert.assertEquals("?? is not a valid command\n",
-                streamRedirect.toString()
-                );
+        Assert.assertEquals("?? is not a valid command", ui.getResponse());
     }
 
     @Test
     public void testNewInterfaceListsEmpty() {
+        Mockito.when(core.listEntries()).thenReturn(new ArrayList<String>());
+
         ui.execute("list", "");
 
-        Mockito.verify(core).listEntries();
-        Assert.assertEquals("", streamRedirect.toString());
+        Assert.assertEquals("", ui.getResponse());
     }
 
     @Test
@@ -55,8 +44,8 @@ public class TerminalInterfaceTest {
 
         ui.execute("list", "");
 
-        Assert.assertEquals("2020-10-10 Squat\n2020-11-10 Bench press\n",
-                streamRedirect.toString()
+        Assert.assertEquals("2020-10-10 Squat\n2020-11-10 Bench press",
+                ui.getResponse()
                 );
     }
 
@@ -73,8 +62,9 @@ public class TerminalInterfaceTest {
                 ).setActiveDate("??");
         ui.execute("date", "??");
 
-        Assert.assertEquals("Date must be given as YYYY-MM-DD\n",
-                streamRedirect.toString());
+        Assert.assertEquals("Date must be given as YYYY-MM-DD", 
+                ui.getResponse()
+                );
     }
 
     @Test
@@ -82,8 +72,8 @@ public class TerminalInterfaceTest {
         ui.execute("date", "2020-10-10");
 
         Mockito.verify(core).setActiveDate("2020-10-10");
-        Assert.assertEquals("Active date is set to 2020-10-10\n",
-                streamRedirect.toString()
+        Assert.assertEquals("Active date is set to 2020-10-10",
+                ui.getResponse()
                 );
     }
 
@@ -93,15 +83,6 @@ public class TerminalInterfaceTest {
 
         ui.execute("date", "");
 
-        Mockito.verify(core).getActiveDate();
-        Assert.assertEquals("Active date is 2020-10-10\n",
-                streamRedirect.toString()
-                );
-    }
-
-    @After
-    public void tearDown() {
-        System.out.flush();
-        System.setOut(oldStream);
+        Assert.assertEquals("Active date is 2020-10-10", ui.getResponse());
     }
 }

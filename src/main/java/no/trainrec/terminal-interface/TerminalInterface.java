@@ -5,6 +5,7 @@ import java.util.List;
 
 public class TerminalInterface {
     private CoreAccessor core;
+    private String response;
 
     public TerminalInterface(CoreAccessor inputCore) {
         core = inputCore;
@@ -23,6 +24,7 @@ public class TerminalInterface {
                 run = false;
             } else {
                 ui.execute(parser.getCommand(), parser.getArgument());
+                System.out.println(ui.getResponse());
             }
         }
     }
@@ -32,32 +34,33 @@ public class TerminalInterface {
             case "list": printEntryList(); break;
             case "add": core.addEntry(argument); break;
             case "date": resolveDateCommand(argument); break;
-            default: System.out.println(String.format(
+            default: response = String.format(
                                  "%s is not a valid command", command
-                                 )); break;
+                                 ); break;
         }
     }
 
+    public String getResponse() {
+        return response;
+    }
+
     private void printEntryList() {
-        List<String> entries = core.listEntries();
-        for (String entry : entries) {
-            System.out.println(entry);
-        }
+        response = String.join("\n", core.listEntries());
     }
 
     private void resolveDateCommand(String argument) {
         if (argument == "") {
-            System.out.println(String.format(
+            response = String.format(
                         "Active date is %s", core.getActiveDate()
-                        ));
+                        );
         } else {
             try {
                 core.setActiveDate(argument);
-                System.out.println(String.format(
+                response = String.format(
                         "Active date is set to %s", argument
-                        ));
+                        );
             } catch (IllegalArgumentException ex) {
-                System.out.println("Date must be given as YYYY-MM-DD");
+                response = "Date must be given as YYYY-MM-DD";
             }
         }
     }
