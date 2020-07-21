@@ -2,9 +2,9 @@ package no.trainrec.terminal_interface;
 
 import no.trainrec.core.domain.ExerciseEntry;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.Assert;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Assertions;
 
 import org.mockito.Mockito;
 
@@ -18,7 +18,7 @@ public class CSVStorageTest {
 
     private CSVStorage storage;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         reader = Mockito.mock(BufferedReader.class);
         storage = new CSVStorage(reader);
@@ -38,10 +38,10 @@ public class CSVStorageTest {
         ExerciseEntry squat = entries.get(0);
         ExerciseEntry bench = entries.get(1);
 
-        Assert.assertEquals(2, entries.size());
-        Assert.assertEquals("2020-10-10", squat.getDate());
-        Assert.assertEquals("Squat", squat.getExercise());
-        Assert.assertEquals("2020-10-11", bench.getDate());
-        Assert.assertEquals("Bench press", bench.getExercise());
+        Assertions.assertEquals(2, entries.size());
+        Assertions.assertEquals("2020-10-10", squat.getDate());
+        Assertions.assertEquals("Squat", squat.getExercise());
+        Assertions.assertEquals("2020-10-11", bench.getDate());
+        Assertions.assertEquals("Bench press", bench.getExercise());
     }
 }

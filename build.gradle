@@ -24,13 +24,13 @@ dependencies {
     implementation ":core"
 
     // Test framework
-    testImplementation 'junit:junit:4.13'
-    testImplementation 'org.mockito:mockito-core:2.+'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.2'
+    testImplementation 'org.mockito:mockito-core:3.4.4'
 }
 
 application {
     // Define the main class for the application.
-    mainClassName = 'no.trainrec.terminal_interface.TerminalInterface'
+    mainClassName = 'no.trainrec.terminal_interface.CommandLineMain'
 }
 
 run{

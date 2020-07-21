@@ -1,8 +1,8 @@
 package no.trainrec.terminal_interface;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.Assert;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Assertions;
 
 import org.mockito.Mockito;
 
@@ -19,7 +19,7 @@ public class CoreAccessorTest {
     private EntryAdder adder;
     private CoreAccessor accessor; 
 
-    @Before
+    @BeforeEach
     public void setUp() {
         accessor = new CoreAccessor(Mockito.mock(StorageInterface.class));
         rec = Mockito.mock(TrainingRecord.class);
@@ -45,8 +45,8 @@ public class CoreAccessorTest {
 
         List<String> entries = accessor.listEntries();
 
-        Assert.assertEquals(1, entries.size());
-        Assert.assertEquals("2020-10-01 Squat", entries.get(0));
+        Assertions.assertEquals(1, entries.size());
+        Assertions.assertEquals("2020-10-01 Squat", entries.get(0));
     }
 
     @Test
