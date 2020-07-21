@@ -27,6 +27,11 @@ public class TextInterfaceTest {
     }
 
     @Test
+    public void testGetResponseBeforeCommand() {
+        Assert.assertEquals("", ui.getResponse());
+    }
+
+    @Test
     public void testNewInterfaceListsEmpty() {
         Mockito.when(core.listEntries()).thenReturn(new ArrayList<String>());
 
