@@ -3,23 +3,21 @@ package no.trainrec.terminal_interface;
 import java.util.Scanner;
 
 import java.io.File;
-import java.io.FileReader;
-import java.io.BufferedReader;
 
 public class CommandLineMain {
     public static void main(String[] argv) {
         try {
             File data = new File("data.csv");
             data.createNewFile(); // Does nothing if file already exists
-            BufferedReader reader = new BufferedReader(new FileReader(data));
-            CommandLineMain.run(reader);
+            FileIO io = new FileIO(data);
+            CommandLineMain.run(io);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
 
-    private static void run(BufferedReader reader) {
-        CSVStorage storage = new CSVStorage(reader);
+    private static void run(FileIO io) {
+        CSVStorage storage = new CSVStorage(io);
         TextInterface ui = new TextInterface(new CoreAccessor(storage));
         CommandParser parser = new CommandParser("");
         Scanner input = new Scanner(System.in);
@@ -28,6 +26,7 @@ public class CommandLineMain {
             System.out.print(">");
             parser.parse(input.nextLine());
             if (parser.getCommand().equals("exit")) {
+                ui.execute("save", "");
                 run = false;
             } else {
                 ui.execute(parser.getCommand(), parser.getArgument());

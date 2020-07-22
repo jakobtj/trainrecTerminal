@@ -15,6 +15,7 @@ public class TextInterface {
             case "list": printEntryList(); break;
             case "add": addEntry(argument); break;
             case "date": resolveDateCommand(argument); break;
+            case "save": save(); break;
             default: response = String.format(
                                  "%s is not a valid command", command
                                  ); break;
@@ -49,5 +50,10 @@ public class TextInterface {
                 response = "Date must be given as YYYY-MM-DD";
             }
         }
+    }
+
+    private void save() {
+        core.save();
+        response = "Record saved";
     }
 }

@@ -46,4 +46,8 @@ public class CoreAccessor {
         }
         return entries;
     }
+
+    public void save() {
+        rec.save();
+    }
 }

@@ -91,4 +91,12 @@ public class TextInterfaceTest {
 
         Assertions.assertEquals("Active date is 2020-10-10", ui.getResponse());
     }
+
+    @Test
+    public void testSave() {
+        ui.execute("save", "");
+
+        Mockito.verify(core).save();
+        Assertions.assertEquals("Record saved", ui.getResponse());
+    }
 }
