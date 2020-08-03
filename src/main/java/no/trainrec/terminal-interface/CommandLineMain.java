@@ -31,7 +31,8 @@ public class CommandLineMain {
             if (parser.getCommand().equals("exit")) {
                 ui.execute("save", "");
                 run = false;
-            } else {
+            }
+            if (!parser.getCommand().isBlank()) {
                 ui.execute(parser.getCommand(), parser.getArgument());
                 System.out.println(ui.getResponse());
             }
