@@ -23,6 +23,14 @@ public class CommandParserTest {
     }
 
     @Test
+    public void testParseSpace() {
+        parser.parse(" ");
+
+        Assertions.assertEquals("", parser.getCommand());
+        Assertions.assertEquals("", parser.getArgument());
+    }
+
+    @Test
     public void testCommandNoArgument() {
         parser.parse("add");
 
