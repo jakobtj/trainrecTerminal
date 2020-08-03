@@ -8,5 +8,3 @@
  */
 
 rootProject.name = 'terminal-interface'
-
-includeBuild '../core'

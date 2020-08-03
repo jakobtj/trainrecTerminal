@@ -1,5 +1,8 @@
 package no.trainrec.terminal_interface;
 
+import no.trainrec.storage.CSV;
+import no.trainrec.storage.FileIO;
+
 import java.util.Scanner;
 
 import java.io.File;
@@ -17,7 +20,7 @@ public class CommandLineMain {
     }
 
     private static void run(FileIO io) {
-        CSVStorage storage = new CSVStorage(io);
+        CSV storage = new CSV(io);
         TextInterface ui = new TextInterface(new CoreAccessor(storage));
         CommandParser parser = new CommandParser("");
         Scanner input = new Scanner(System.in);
