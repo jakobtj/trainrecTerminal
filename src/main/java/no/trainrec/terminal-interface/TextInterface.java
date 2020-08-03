@@ -16,6 +16,7 @@ public class TextInterface {
             case "add": addEntry(argument); break;
             case "date": resolveDateCommand(argument); break;
             case "save": save(); break;
+            case "exit": execute("save", ""); break;
             default: response = String.format(
                                  "%s is not a valid command", command
                                  ); break;
