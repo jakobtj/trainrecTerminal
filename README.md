@@ -1,1 +1,1 @@
-# trainrecTerminal
+# trainrecCLI
